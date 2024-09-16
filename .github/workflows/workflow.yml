@@ -46,6 +46,7 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
+        cache: 'maven'
 
     - name: Build with Maven
       env:
