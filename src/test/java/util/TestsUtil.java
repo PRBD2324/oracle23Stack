@@ -54,7 +54,7 @@ public class TestsUtil {
 
 		FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
 		builder.setColumnSensing(true);
-		IDataSet dataSet = builder.build(new File("src/reducidopoblaciondatosiniciales.xml"));
+		IDataSet dataSet = builder.build(new File("src/population.xml"));
 		ReplacementDataSet dataSetR = new ReplacementDataSet(dataSet);
 		dataSetR.addReplacementObject("[null]", null);
 		
