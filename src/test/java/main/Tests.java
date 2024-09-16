@@ -40,14 +40,14 @@ public class Tests extends TestsUtil {
 		schema = GestorBD.getPropiedad("schema");
 	}
 
-	
+
 	@Before
 	public void importDataSet() throws Exception {
 		IDataSet dataSet = readDataSet();
 		cleanlyInsertDataset(dataSet);
 	}
 
-	
+
 	@Test
 	public void test1IsFestivoSi() {
 		try {

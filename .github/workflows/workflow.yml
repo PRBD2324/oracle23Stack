@@ -26,6 +26,7 @@ jobs:
 
     - name: Check Oracle container
       run: |
+        docker container ls
         if [[ $(docker inspect -f {{.State.Running}} oracle) != "true" ]]; then
           echo "[ERR] oracle container not running!"
           exit 1
@@ -39,10 +40,9 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Setup timezone
-      uses: zcong1993/setup-timezone@master
-      with:
-        timezone: Europe/Madrid
-
     - name: Build with Maven
-      run: mvn -B test --file pom.xml
+      env:
+        TZ: 'Europe/Madrid'
+      run: |
+        date
+        mvn -B test --file pom.xml
