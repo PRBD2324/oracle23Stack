@@ -23,7 +23,7 @@ import model.ExcepcionDeAplicacion;
 import model.LineaEnRealizacion;
 import model.PedidoEnRealizacion;
 
-public class GestorBD extends AbstractDBManager {
+public class GestorBD {
 
     // Constantes
     private static final String URL = getPropiedad("url");
