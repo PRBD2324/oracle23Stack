@@ -29,7 +29,7 @@ import sol.GestorBD;
 import util.TestsUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestsPr6 extends TestsUtil {
+public class Tests extends TestsUtil {
 
 	@BeforeClass
 	public static void creacionGestorBD() {
