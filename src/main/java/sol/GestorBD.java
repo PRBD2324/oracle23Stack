@@ -54,7 +54,7 @@ public class GestorBD {
     
 
             java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String sql = "SELECT * FROM Festivo WHERE fecha ={d '"+df.format(fecha.getTime())+"'}";
+            String sql = "SELECT * FROM myUser.Festivo WHERE fecha ={d '"+df.format(fecha.getTime())+"'}";
             System.out.println(sql);
             Statement ps = con.createStatement();
             ResultSet res = ps.executeQuery(sql);
