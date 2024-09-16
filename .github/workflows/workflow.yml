@@ -32,6 +32,7 @@ jobs:
           exit 1
         else
           echo "[INF] oracle container is running!"
+          docker container logs oracle
         fi
 
     - name: Set up JDK 21
