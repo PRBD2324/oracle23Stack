@@ -1,31 +1,45 @@
-name: Build and test of Java Project
- 
-on: [push]
- 
-jobs: 
- test:
-  runs-on: ubuntu-latest
-  timeout-minutes: 6
-  steps:
-     - uses: actions/checkout@v4
-     - uses: gvenzl/setup-oracle-free@v1
-       with:
-          container-name: oracle
-          container-runtime: docker
-          app-user: myUser
-          app-user-password: myPwd
-          health-interval: 10s
-          health-max-retries: 20
-          startup-scripts: ${{ github.workspace }}/scripts
-     - name: Check Oracle container
-       run: echo "running? $(docker inspect -f {{.State.Running}} oracle)"
-     - name: Set up JDK 21
-       uses: actions/setup-java@v1
-       with:
-         java-version: 21
-     - name: Setup timezone
-       uses: zcong1993/setup-timezone@master
-       with:
-          timezone: Europe/Madrid
-     - name: Build with Maven
-       run: mvn -B test --file pom.xml
+name: Build and Test
+
+on: push
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Oracle
+      uses: gvenzl/setup-oracle-free@v1
+      with:
+        container-name: oracle
+        container-runtime: docker
+        app-user: myUser
+        app-user-password: myPwd
+        health-interval: 10s
+        health-max-retries: 20
+        startup-scripts: ${{ github.workspace }}/scripts
+
+    - name: Check Oracle container
+      run: |
+        if [[ $(docker inspect -f {{.State.Running}} oracle) != "true" ]]; then
+          echo "[ERR] oracle container not running!"
+          exit 1
+        else
+          echo "[INF] oracle container is running!"
+        fi
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: 21
+
+    - name: Setup timezone
+      uses: zcong1993/setup-timezone@master
+      with:
+        timezone: Europe/Madrid
+
+    - name: Build with Maven
+      run: mvn -B test --file pom.xml
