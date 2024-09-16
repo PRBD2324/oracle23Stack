@@ -18,8 +18,8 @@ jobs:
       with:
         container-name: oracle
         container-runtime: docker
-        app-user: myUser
-        app-user-password: myPwd
+        app-user: app_user
+        app-user-password: app_user_password
         health-interval: 10s
         health-max-retries: 20
         setup-scripts: ${{ github.workspace }}/scripts
