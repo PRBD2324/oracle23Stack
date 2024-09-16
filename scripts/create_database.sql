@@ -12,5 +12,6 @@ CREATE TABLE FESTIVO (
   FECHA   DATE    NOT NULL
 );
 
- SELECT table_name FROM all_tables;
-SELECT table_name FROM all_tables WHERE OWNER = 'myUser';
+-- SELECT table_name FROM all_tables;
+-- SELECT table_name FROM all_tables WHERE OWNER = 'myUser';
+ Select owner from dba_tables where table_name = 'FESTIVO'; 
