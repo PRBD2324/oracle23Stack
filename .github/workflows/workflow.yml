@@ -30,9 +30,15 @@ jobs:
         if [[ $(docker inspect -f {{.State.Running}} oracle) != "true" ]]; then
           echo "[ERR] oracle container not running!"
           exit 1
+        fi
+        echo "[INF] oracle container is running!"
+        docker container logs oracle | tee -a logs.txt
+        if grep 'ERROR' logs.txt >/dev/null; then
+          echo "[ERR] Something went wrong while initializing/starting container!"
+          echo "[ERR] See above container logs for more details."
+          exit 1
         else
-          echo "[INF] oracle container is running!"
-          docker container logs oracle
+          echo "[INF] orcale container started successfully!"
         fi
 
     - name: Set up JDK 21
