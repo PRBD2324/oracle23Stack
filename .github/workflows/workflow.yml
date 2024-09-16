@@ -22,7 +22,7 @@ jobs:
         app-user-password: myPwd
         health-interval: 10s
         health-max-retries: 20
-        startup-scripts: ${{ github.workspace }}/scripts
+        setup-scripts: ${{ github.workspace }}/scripts
 
     - name: Check Oracle container
       run: |
