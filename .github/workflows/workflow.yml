@@ -13,10 +13,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Setup Oracle
+    - name: Setup Oracle container
       uses: gvenzl/setup-oracle-free@v1
       with:
-        container-name: oracle
         container-runtime: docker
         app-user: app_user
         app-user-password: app_user_password
@@ -24,33 +23,25 @@ jobs:
         health-max-retries: 20
         setup-scripts: ${{ github.workspace }}/scripts
 
-    - name: Check Oracle container
+    - name: Check Oracle container logs for errors
       run: |
         docker container ls
-        if [[ $(docker inspect -f {{.State.Running}} oracle) != "true" ]]; then
-          echo "[ERR] oracle container not running!"
+        docker container logs oracle | tee -a /tmp/oracle.log
+        if grep 'ERROR' /tmp/oracle.log >/dev/null; then
+          echo "[ERR] Something went wrong!"
+          echo "[ERR] See above logs for more details."
           exit 1
         fi
-        echo "[INF] oracle container is running!"
-        docker container logs oracle | tee -a logs.txt
-        if grep 'ERROR' logs.txt >/dev/null; then
-          echo "[ERR] Something went wrong while initializing/starting container!"
-          echo "[ERR] See above container logs for more details."
-          exit 1
-        else
-          echo "[INF] orcale container started successfully!"
-        fi
+        echo "[INF] orcale container started successfully!"
 
-    - name: Set up JDK 21
+    - name: Set up Java 21
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: 'maven'
+        java-version: 21
+        distribution: temurin
+        cache: maven
 
     - name: Build with Maven
       env:
-        TZ: 'Europe/Madrid'
-      run: |
-        date
-        mvn -B test --file pom.xml
+        TZ: Europe/Madrid
+      run: mvn -B test --file pom.xml
